@@ -79,19 +79,22 @@ func Scan() bool {
 	}
 	var err error
 	line, err = reader.ReadBytes('\n')
-	if err != nil {
-		if err == io.EOF {
+	switch err {
+	case io.EOF:
+		if len(line) == 0 {
 			if file != nil {
 				file.Close()
 			}
 			reader = nil
 			return Scan()
 		}
+		// line does not end with \n
+	case nil:
+		// line ends with \n
+		line = line[:len(line)-1]
+	default:
 		curError = err
 		return false
-	} else {
-		// According to the ReadBytes contract, line ends in '\n' iff err != nil.
-		line = line[:len(line)-1]
 	}
 	return true
 }
