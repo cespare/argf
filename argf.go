@@ -80,8 +80,11 @@ func Scan() bool {
 	}
 	var err error
 	line, err = reader.ReadBytes('\n')
-	switch err {
-	case io.EOF:
+	if err != nil {
+		if err != io.EOF {
+			curError = err
+			return false
+		}
 		if len(line) == 0 {
 			if file != nil {
 				file.Close()
@@ -89,11 +92,6 @@ func Scan() bool {
 			reader = nil
 			return Scan()
 		}
-	case nil:
-		// skip
-	default:
-		curError = err
-		return false
 	}
 	line = bytes.TrimRight(line, "\r\n")
 	return true
