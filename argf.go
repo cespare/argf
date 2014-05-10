@@ -22,6 +22,7 @@ package argf
 
 import (
 	"bufio"
+	"bytes"
 	"io"
 	"os"
 )
@@ -88,14 +89,13 @@ func Scan() bool {
 			reader = nil
 			return Scan()
 		}
-		// line does not end with \n
 	case nil:
-		// line ends with \n
-		line = line[:len(line)-1]
+		// skip
 	default:
 		curError = err
 		return false
 	}
+	line = bytes.TrimRight(line, "\r\n")
 	return true
 }
 
