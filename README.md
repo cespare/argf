@@ -1,5 +1,7 @@
 # argf
 
+[![GoDoc](https://godoc.org/github.com/cespare/argf?status.svg)](https://godoc.org/github.com/cespare/argf)
+
 This is a small Go library that reads lines of text from either a file or files specified in `os.Args`, or, if
 none are given, from stdin. It's similar to Ruby's `ARGF` or Perl's diamond operator.
 
@@ -27,5 +29,3 @@ func main() {
   }
 }
 ```
-
-See full package documentation [at godoc.org](http://godoc.org/github.com/cespare/argf).
