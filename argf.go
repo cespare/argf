@@ -1,10 +1,11 @@
-// Package argf provides a simple way of reading line-by-line from either files given as commandline arguments
-// or, if none were given, from stdin.
+// Package argf provides a simple way of reading line-by-line from either files
+// given as command-line arguments or, if none were given, from stdin.
 //
 // The interface resembles bufio.Scanner.
 //
-// This package provides a convenient way of handling input for commandline utilities. For instance, here is a
-// simple implementation of the Unix utility 'cat':
+// This package provides a convenient way of handling input for command-line
+// utilities. For instance, here is a simple implementation of the Unix utility
+// 'cat':
 //
 //   for argf.Scan() {
 //     fmt.Println(argf.String())
@@ -14,10 +15,12 @@
 //     os.Exit(1)
 //   }
 //
-// If flags are required, you can call Init(flag.Args()) after flag parsing but before any other argf calls to
-// initialize argf with the non-flag arguments given in the commandline (presumably filenames).
+// If flags are required, you can call Init(flag.Args()) after flag parsing but
+// before any other argf calls to initialize argf with the non-flag arguments
+// given in the command-line (presumably filenames).
 //
-// Multiple goroutines should not call any of the functions in argf concurrently.
+// Multiple goroutines should not call any of the functions in argf
+// concurrently.
 package argf
 
 import (
@@ -37,9 +40,10 @@ var (
 	curError    error
 )
 
-// Init initializes argf's state using some filename arguments. If args is empty, argf uses stdin instead of
-// files. Without calling Init(), argf initializes itself the first time Scan is called, using os.Args[1:]
-// (ignoring the program name).
+// Init initializes argf's state using some filename arguments. If args is
+// empty, argf uses stdin instead of files. Without calling Init(), argf
+// initializes itself the first time Scan is called, using os.Args[1:] (ignoring
+// the program name).
 func Init(args []string) {
 	initialized = true
 	if len(args) == 0 {
@@ -49,11 +53,12 @@ func Init(args []string) {
 	fileArgs = args
 }
 
-// Scan reads the next line from either os.Stdin or the current file in os.Args, as described in the package
-// documentation. If the current file has been exhausted, Scan attempts to open the next file in os.Args, if
-// there is one. If there are no more lines to be read from os.Stdin or any files, or if Scan encounters an
-// error, false is returned. Otherwise, true is returned and the line is available to be accessed by String or
-// Bytes.
+// Scan reads the next line from either os.Stdin or the current file in os.Args,
+// as described in the package documentation. If the current file has been
+// exhausted, Scan attempts to open the next file in os.Args, if there is one.
+// If there are no more lines to be read from os.Stdin or any files, or if Scan
+// encounters an error, false is returned. Otherwise, true is returned and the
+// line is available to be accessed by String or Bytes.
 func Scan() bool {
 	if !initialized {
 		args := os.Args
@@ -97,9 +102,9 @@ func Scan() bool {
 	return true
 }
 
-// String returns the current line as a string without the trailing newline. It panics unless preceeded by a
-// call to Scan that returned true. String may be called multiple times consecutively but returns the same
-// line each time.
+// String returns the current line as a string without the trailing newline. It
+// panics unless preceeded by a call to Scan that returned true. String may be
+// called multiple times consecutively but returns the same line each time.
 func String() string {
 	if !initialized {
 		panic("argf: call to String before Scan.")
@@ -110,9 +115,9 @@ func String() string {
 	return string(line)
 }
 
-// Bytes returns the current line as a []byte without the trailing newline. It panics unless preceeded by a
-// call to Scan that returned true. Bytes may be called multiple times consecutively but returns the same
-// line each time.
+// Bytes returns the current line as a []byte without the trailing newline. It
+// panics unless preceeded by a call to Scan that returned true. Bytes may be
+// called multiple times consecutively but returns the same line each time.
 func Bytes() []byte {
 	if !initialized {
 		panic("argf: call to Bytes before Scan.")
@@ -123,8 +128,8 @@ func Bytes() []byte {
 	return line
 }
 
-// Error returns the error that caused Scan to return false, unless it was an io.EOF, in which case Error
-// returns nil.
+// Error returns the error that caused Scan to return false, unless it was an
+// io.EOF, in which case Error returns nil.
 func Error() error {
 	if !initialized {
 		panic("argf: call to Error before Scan.")
